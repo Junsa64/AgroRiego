@@ -1,0 +1,14 @@
+{
+  "name": "agroriego-simulador",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Simula sensores de humedad que publican lecturas por MQTT mientras no hay hardware",
+  "scripts": {
+    "simular": "node index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "mqtt": "^5.10.4"
+  }
+}
