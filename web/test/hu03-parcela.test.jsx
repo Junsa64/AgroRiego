@@ -5,7 +5,8 @@ import userEvent from '@testing-library/user-event';
 import { conSesion, montar, simularApi, PRODUCTOR } from './utilidades.jsx';
 
 const llenar = async (u, { nombre = 'El Carrizal', superficie = '6.5', cultivo = 'Maíz', mapa = true } = {}) => {
-  if (nombre) await u.type(await screen.findByLabelText('Nombre de la parcela'), nombre);
+  const campoNombre = await screen.findByLabelText('Nombre de la parcela'); // espera a que cargue la pantalla
+  if (nombre) await u.type(campoNombre, nombre);
   if (superficie) await u.type(screen.getByLabelText('Superficie (ha)'), superficie);
   if (cultivo) await u.selectOptions(screen.getByLabelText('Cultivo'), cultivo);
   if (mapa) await u.click(screen.getByRole('button', { name: 'Marcar en el mapa' }));
