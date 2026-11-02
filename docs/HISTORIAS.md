@@ -77,6 +77,6 @@ Como técnico de campo, quiero recibir un aviso cuando un sensor o válvula deje
 
 - El código está en GitHub e integrado a `main` mediante pull request revisado por otro integrante.
 - Cumple todos sus criterios de aceptación.
-- Sus casos de prueba se ejecutaron y los defectos se registraron y cerraron en Jira.
+- Sus casos de prueba se ejecutaron y los defectos se registraron y cerraron en GitHub Issues.
 - Funciona desplegada en el ambiente de pruebas.
 - El Product Owner la aceptó en la revisión del sprint.

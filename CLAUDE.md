@@ -39,7 +39,7 @@ Las capturas del prototipo de alta fidelidad están en `docs/prototipo/` (P1 a P
 ## Reglas de trabajo
 
 - **Una tarea del Kanban a la vez.** Las tareas tienen ID (T1.1, T1.2…) y están en `docs/PROMPTS.md`.
-- **Commits**: en español y con el ID de la tarea al inicio, por ejemplo `T1.4: API de inicio de sesión con bloqueo tras 5 intentos`. Si existe la clave de Jira, agrégala: `AGRO-3 T1.4: …`.
+- **Commits**: en español y con el ID de la tarea al inicio, por ejemplo `T1.4: API de inicio de sesión con bloqueo tras 5 intentos`. Si existe un issue de GitHub, refiérelo: `T1.4: … (#3)`.
 - **Ramas**: una por tarea, `tarea/T1-4-api-login`. Se integra a `main` por pull request.
 - **Pruebas**: cada criterio de aceptación de la historia debe tener al menos una prueba automática. Corre las pruebas antes de dar una tarea por terminada.
 - **Casos de prueba**: además de las pruebas automáticas, documenta los casos en `docs/pruebas/HU-XX.md` (ID, pasos, resultado esperado, resultado obtenido). El equipo los usa para el informe del sprint.

@@ -5,7 +5,7 @@ Cómo usarlos:
 1. Abre Claude Code en la carpeta del repositorio. Lee `CLAUDE.md` solo, al iniciar cada sesión.
 2. Copia el prompt de la tarea que vas a hacer. Una tarea por sesión o por rama.
 3. Revisa lo que propone antes de aceptar cambios, corre las pruebas y abre el pull request.
-4. Mueve la tarea en Jira y en el Kanban: «En progreso» al empezar, «En pruebas» con el PR abierto, «Hecho» al integrarlo.
+4. Mueve la tarea en el Kanban: «En progreso» al empezar, «En pruebas» con el PR abierto, «Hecho» al integrarlo.
 
 Cada prompt pide trabajar en su propia rama y hacer commit con el ID de la tarea, para que el historial de GitHub sirva como evidencia del sprint.
 
