@@ -42,6 +42,25 @@ Las versiones editables de los tableros se actualizan en cada junta diaria; los 
 
 Historias y criterios de aceptación: [docs/HISTORIAS.md](docs/HISTORIAS.md) · Prototipo: [docs/prototipo/](docs/prototipo/)
 
+## Cómo correrlo
+
+```bash
+cp .env.example .env              # cambia las contraseñas
+docker compose up -d --build      # web en http://localhost
+docker compose exec api npm run seed
+```
+
+Usuarios de prueba: `productor@agroriego.test` y `tecnico@agroriego.test`, contraseña `Prueba#2026`.
+
+| Carpeta | Qué hay |
+| --- | --- |
+| `api/` | API Express + PostgreSQL: autenticación, parcelas, dispositivos y adaptador MQTT |
+| `web/` | App móvil (PWA) en React: inicio de sesión, parcelas y pantalla del técnico |
+| `simulador/` | Sensores simulados que publican lecturas por MQTT |
+| `deploy/` | Despliegue en AWS EC2 |
+
+Pruebas: `npm test` en cada carpeta. GitHub Actions las corre en cada push.
+
 ## Convenciones
 
 - Una rama por tarea del Kanban: `tarea/T1-4-api-login`.

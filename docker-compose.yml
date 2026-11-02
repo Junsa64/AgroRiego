@@ -1,0 +1,53 @@
+# Ambiente completo de AgroRiego (desarrollo y la instancia EC2 del ambiente de pruebas).
+# Uso: cp .env.example .env  →  docker compose up -d --build  →  docker compose exec api npm run seed
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: agroriego
+      POSTGRES_USER: agroriego
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
+    volumes:
+      - datos-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agroriego -d agroriego"]
+      interval: 5s
+      retries: 10
+    # Sin puertos publicados: la base de datos solo es accesible desde la red interna.
+
+  broker:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    ports:
+      # Solo en la máquina local; el simulador se conecta desde la misma instancia.
+      - "127.0.0.1:1883:1883"
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_started
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://agroriego:${POSTGRES_PASSWORD}@db:5432/agroriego
+      JWT_SECRETO: ${JWT_SECRETO:?Define JWT_SECRETO en .env}
+      MQTT_URL: mqtt://broker:1883
+      URL_APP: ${URL_APP:-http://localhost}
+      COOKIE_SEGURA: ${COOKIE_SEGURA:-false}
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+
+volumes:
+  datos-db:
