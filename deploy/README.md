@@ -11,7 +11,7 @@ Consola de AWS → **Billing and Cost Management → Budgets → Create budget**
 1. **EC2 → Launch instance**.
 2. Nombre: `agroriego-pruebas`.
 3. Imagen: **Ubuntu Server 24.04 LTS**.
-4. Tipo: **t3.small** (o t3.micro; el script agrega memoria de intercambio para que alcance).
+4. Tipo: **t3.micro**, elegible del nivel gratuito (el script agrega 2 GB de memoria de intercambio para que alcance).
 5. Par de llaves: crea uno y guárdalo (sirve para entrar por SSH).
 6. Red → **Security group** nuevo con estas reglas de entrada:
    - SSH (22) solo desde **My IP**.
@@ -49,5 +49,15 @@ cd /opt/agroriego && sudo git pull && sudo docker compose up -d --build
 ```
 
 ## 5. Apagar para no gastar créditos
+
+Para que la instancia se apague sola en una fecha, agrega al inicio del script (después de `set -euo pipefail`):
+
+```bash
+systemd-run --on-calendar="2026-11-10 06:59:00 UTC" /sbin/shutdown -h now || true
+```
+
+Apagada no cobra cómputo ni IP pública; solo el disco.
+
+Para apagarla a mano:
 
 EC2 → selecciona la instancia → **Instance state → Stop**. Los datos se conservan; al encenderla cambia la IP pública.
