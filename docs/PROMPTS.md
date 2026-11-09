@@ -1,5 +1,7 @@
 # Prompts para Claude Code, uno por tarea del Kanban
 
+> Nota (ADR-006): el Sprint 1 se construyó en JavaScript con node-postgres y migraciones SQL, no con TypeScript y Prisma. Al usar los prompts de los Sprints 2 y 3, pide a Claude Code que siga el stack actual descrito en `CLAUDE.md`.
+
 Cómo usarlos:
 
 1. Abre Claude Code en la carpeta del repositorio. Lee `CLAUDE.md` solo, al iniciar cada sesión.

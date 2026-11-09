@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  api:
+    name: API (HU-01, HU-03, HU-04)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: agroriego
+          POSTGRES_PASSWORD: agroriego
+          POSTGRES_DB: agroriego_pruebas
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U agroriego"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://agroriego:agroriego@localhost:5432/agroriego_pruebas
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx vitest run --reporter=verbose --reporter=junit --outputFile.junit=resultados-api.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resultados-api
+          path: api/resultados-api.xml
+
+  web:
+    name: App web (interfaz)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx vitest run --reporter=verbose --reporter=junit --outputFile.junit=resultados-web.xml
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resultados-web
+          path: web/resultados-web.xml
+
+  simulador:
+    name: Simulador
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: simulador
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm test
+
+  docker:
+    name: Imágenes Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t agroriego-api ./api
+      - run: docker build -t agroriego-web ./web

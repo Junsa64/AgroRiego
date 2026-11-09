@@ -1,0 +1,11 @@
+{
+  "name": "AgroRiego",
+  "short_name": "AgroRiego",
+  "description": "Riega solo cuando tu cultivo lo necesita.",
+  "lang": "es-MX",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4F6F2",
+  "theme_color": "#1E6B47",
+  "icons": [{ "src": "/icono.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

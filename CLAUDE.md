@@ -18,9 +18,9 @@ Fuera de alcance (backlog futuro): HU-02, HU-06, HU-10, HU-13, HU-14, HU-15, HU-
 
 ## Stack
 
-- **Monorepo** con dos carpetas: `web/` y `api/`. Node.js 20+ y TypeScript en ambas.
+- **Monorepo** con tres carpetas: `web/`, `api/` y `simulador/`. Node.js 20+ y JavaScript (módulos ES) en todas (ADR-006).
 - **web/**: React + Vite, diseño mobile-first (390 px de ancho), instalable como PWA. React Router para pantallas.
-- **api/**: Express + Prisma.
+- **api/**: Express + node-postgres (`pg`) con migraciones SQL en `api/migrations/` (ADR-006). Los módulos viven en `api/src/modulos/`; el adaptador MQTT en `api/src/iot/`. Ningún módulo hace SQL fuera de su archivo de módulo.
 - **Base de datos**: PostgreSQL 16 en Docker (`docker-compose.yml` en la raíz).
 - **Sensores y válvulas**: no hay hardware. Se simulan con `simulador/`, un script que publica lecturas por MQTT (broker Mosquitto en Docker) cada 5 minutos, o cada 10 s con `--rapido` para demos.
 - **Pruebas**: Vitest + Supertest en `api/`, Vitest + Testing Library en `web/`.
@@ -48,12 +48,12 @@ Las capturas del prototipo de alta fidelidad están en `docs/prototipo/` (P1 a P
 
 ## Comandos
 
-(Actualiza esta sección cuando existan.)
-
-- `docker compose up -d` — base de datos y broker MQTT
-- `npm run dev` en `api/` y en `web/`
-- `npm test` en `api/` y en `web/`
-- `npm run simular` en `simulador/`
+- `cp .env.example .env && docker compose up -d --build` — todo el ambiente (web en http://localhost)
+- `docker compose exec api npm run seed` — usuarios, parcelas y equipos de prueba
+- Desarrollo: `docker compose up -d db broker`, luego `npm run dev` en `api/` (con `DATABASE_URL`, `JWT_SECRETO`, `MQTT_URL`) y en `web/`
+- `npm test` en `api/` (necesita `DATABASE_URL` a una base de datos de pruebas: la borra y la vuelve a crear), en `web/` y en `simulador/`
+- `npm run simular -- --codigo HS-0161 --rapido` en `simulador/`
+- Despliegue en AWS: `deploy/README.md`
 
 ## Equipo y responsables
 
